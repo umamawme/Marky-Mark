@@ -15,7 +15,7 @@ public struct LinkStyling: ItemStyling, TextColorStylingRule, UnderlineStylingRu
         return markDownItem is LinkMarkDownItem
     }
 
-    public var textColor: UIColor? = .black
+    public var textColor: UIColor? = .label
     public var baseFont: UIFont?
 
     public var isBold = false
