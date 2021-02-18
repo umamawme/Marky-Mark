@@ -31,6 +31,7 @@ open class MarkDownTextView: UIView {
     public var urlOpener: URLOpener? {
         didSet {
             (viewConfiguration as? MarkDownAsViewViewConfiguration)?.urlOpener = urlOpener
+            (viewConfiguration as? MarkDownAsAttributedStringViewConfiguration)?.urlOpener = urlOpener
             render(withMarkdownText: text)
         }
     }
@@ -156,7 +157,9 @@ private class MarkDownAsViewViewConfiguration: CanConfigureViews {
     }
 }
 
-private class MarkDownAsAttributedStringViewConfiguration: CanConfigureViews {
+private class MarkDownAsAttributedStringViewConfiguration: NSObject, CanConfigureViews {
+
+    var urlOpener: URLOpener?
 
     private weak var owner: MarkDownTextView?
 
@@ -173,6 +176,7 @@ private class MarkDownAsAttributedStringViewConfiguration: CanConfigureViews {
         let attributedString = converter.convert(owner.markDownItems)
 
         let textView = LabeledTextView()
+        textView.delegate = self
         textView.isScrollEnabled = false
         textView.isEditable = false
         textView.isSelectable = true
@@ -184,8 +188,6 @@ private class MarkDownAsAttributedStringViewConfiguration: CanConfigureViews {
         textView.tintColor = owner.styling.linkStyling.textColor
         textView.translatesAutoresizingMaskIntoConstraints = false
         
-        textView.textContainer.maximumNumberOfLines = 6
-        textView.textContainer.lineBreakMode = .byTruncatingTail
         textView.textColor = .label
         textView.backgroundColor = .clear
 
@@ -210,6 +212,18 @@ private class MarkDownAsAttributedStringViewConfiguration: CanConfigureViews {
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[markDownView]|", options: [], metrics: [:], views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[markDownView]|", options: [], metrics: [:], views: views)
         owner.addConstraints(constraints)
+    }
+}
+
+extension MarkDownAsAttributedStringViewConfiguration: UITextViewDelegate {
+    func textView(
+        _ textView: UITextView,
+        shouldInteractWith URL: URL,
+        in characterRange: NSRange,
+        interaction: UITextItemInteraction
+    ) -> Bool {
+        urlOpener?.open(url: URL)
+        return false
     }
 }
 
