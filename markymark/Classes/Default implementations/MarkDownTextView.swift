@@ -174,6 +174,8 @@ private class MarkDownAsAttributedStringViewConfiguration: CanConfigureViews {
 
         let textView = LabeledTextView()
         textView.isScrollEnabled = false
+        textView.isEditable = false
+        textView.isSelectable = true
 
         textView.attributedText = attributedString
         textView.dataDetectorTypes = [.phoneNumber, .link]
