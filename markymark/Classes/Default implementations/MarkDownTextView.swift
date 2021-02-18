@@ -183,6 +183,11 @@ private class MarkDownAsAttributedStringViewConfiguration: CanConfigureViews {
 
         textView.tintColor = owner.styling.linkStyling.textColor
         textView.translatesAutoresizingMaskIntoConstraints = false
+        
+        textView.textContainer.maximumNumberOfLines = 6
+        textView.textContainer.lineBreakMode = .byTruncatingTail
+        textView.textColor = .label
+        textView.backgroundColor = .clear
 
         owner.onDidPreconfigureTextView?(textView)
 
