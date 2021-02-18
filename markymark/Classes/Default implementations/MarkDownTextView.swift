@@ -172,9 +172,8 @@ private class MarkDownAsAttributedStringViewConfiguration: CanConfigureViews {
         let converter = MarkDownConverter(configuration: configuration)
         let attributedString = converter.convert(owner.markDownItems)
 
-        let textView = UITextView()
+        let textView = LabeledTextView()
         textView.isScrollEnabled = false
-        textView.isEditable = false
 
         textView.attributedText = attributedString
         textView.dataDetectorTypes = [.phoneNumber, .link]
@@ -204,5 +203,32 @@ private class MarkDownAsAttributedStringViewConfiguration: CanConfigureViews {
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "H:|[markDownView]|", options: [], metrics: [:], views: views)
         constraints += NSLayoutConstraint.constraints(withVisualFormat: "V:|[markDownView]|", options: [], metrics: [:], views: views)
         owner.addConstraints(constraints)
+    }
+}
+
+class LabeledTextView: UITextView {
+    
+    var numberOfLines: Int = 1 {
+        didSet {
+            self.textContainer.maximumNumberOfLines = numberOfLines
+            self.textContainer.lineBreakMode = .byTruncatingTail
+        }
+    }
+    
+    override init(frame: CGRect, textContainer: NSTextContainer?) {
+        super.init(frame: frame, textContainer: textContainer)
+        commonInit()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        commonInit()
+    }
+    
+    private func commonInit() {
+        self.textContainerInset = .zero
+        self.textContainer.lineFragmentPadding = 0
+        self.sizeToFit()
+        self.layoutManager.usesFontLeading = false
     }
 }
