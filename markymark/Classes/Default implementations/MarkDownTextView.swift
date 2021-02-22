@@ -28,7 +28,7 @@ open class MarkDownTextView: UIView {
         }
     }
 
-    public var urlOpener: URLOpener? {
+    public var urlOpener: URLOpener? = DefaultURLOpener() {
         didSet {
             (viewConfiguration as? MarkDownAsViewViewConfiguration)?.urlOpener = urlOpener
             (viewConfiguration as? MarkDownAsAttributedStringViewConfiguration)?.urlOpener = urlOpener

@@ -10,6 +10,8 @@ import UIKit
 
 public class DefaultURLOpener: URLOpener {
 
+    public init() {}
+    
     private var sharedApplication: UIApplication? {
         let sharedSelector = NSSelectorFromString("sharedApplication")
         guard UIApplication.responds(to: sharedSelector) else {
