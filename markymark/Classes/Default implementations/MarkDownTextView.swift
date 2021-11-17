@@ -36,8 +36,8 @@ open class MarkDownTextView: UIView {
         }
     }
 
-    fileprivate var markDownView: UIView?
-    fileprivate var markDownItems: [MarkDownItem] = []
+    public var markDownView: UIView?
+    public var markDownItems: [MarkDownItem] = []
     private let markyMark: MarkyMark
 
     private var viewConfiguration: CanConfigureViews?
